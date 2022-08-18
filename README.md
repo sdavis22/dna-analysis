@@ -16,8 +16,8 @@ This project is used to format DNA sequencing data. Various metrics are calculat
 ## Inputs
  - For the purposes of this tutorial, assume the name of the input file is `sample.xlsx` and the keyfile is `Calum70-key.xlsx`
  - Ensure that list.txt contains the names of all the files you want to analyze
-  - For each input file, it should be listed in the same line as its keyfile (i.e. `sample, Calum70` exists in list.txt)
-  - Each input file, key file pair should be separated by newlines
+    - For each input file, it should be listed in the same line as its keyfile (i.e. `sample, Calum70` exists in list.txt)
+    - Each input file, key file pair should be separated by newlines
  - For each name, have an input file in the `input` directory, i.e. `input/sample.xlsx`
  - Additionally, ensure you have a key file in the `keys` directory, i.e. `keys/Calum70-key.xlsx`
  - Output files will be generated in the `output` directory as `output/sample-output.xlsx`
