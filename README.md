@@ -9,7 +9,7 @@ This project is used to format DNA sequencing data. Various metrics are calculat
     - For Python3, you can just follow the instructions on [python.org](python.org/downloads)
     - Pip should come installed with the Python3 installation
  - Run `pip install -r requirements.txt`
- - Run `python3 analysis.py`
+ - Run `python3 analyze.py`
  - Wait 10-15 minutes depending on the size and number of files
  - Check outputs in the `output` directory
 

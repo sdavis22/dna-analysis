@@ -75,7 +75,6 @@ def generateOutput(name):
         outsheet.cell(row = 1, column=startcol, value="X{}".format(i))
         startcol+=1
 
-    key.close()
     for rowIdx in range(2, outsheet.max_row+1):
         #Sheet 0 of data will be row 2 of input 
         #Accounting for 0 indexing and header rows
@@ -95,24 +94,35 @@ def generateOutput(name):
     outsheet = outp['Raw']
 
     #Label columns for raw sheet
-    outsheet['A1'] = 'numnc'
-    outsheet['B1'] = 'ncph'
-    outsheet['C1'] = 'sample'
-    outsheet['D1'] = 'amplicon'
-    outsheet['E1'] = 'chr'
-    outsheet['F1'] = 'start'
-    outsheet['G1'] = 'readseq'
-    outsheet['H1'] = 'naCpG'
-    outsheet['I1'] = 'htype'
-    startcol = 10
+    outsheet['A1'] = 'Calum70'
+    outsheet['B1'] = 'name'
+    outsheet['C1'] = 'CpG in Amplicon'
+    outsheet['D1'] = 'epicsite'
+    outsheet['E1'] = 'comments'
+    outsheet['F1'] = 'direction'
+    outsheet['G1'] = 'numnc'
+    outsheet['H1'] = 'ncph'
+    outsheet['I1'] = 'sample'
+    outsheet['J1'] = 'amplicon'
+    outsheet['K1'] = 'chr'
+    outsheet['L1'] = 'start'
+    outsheet['M1'] = 'readseq'
+    outsheet['N1'] = 'naCpG'
+    outsheet['O1'] = 'htype'
+    startcol = 16
     for i in range(1, maxsites+1):
         outsheet.cell(row = 1, column=startcol, value="X{}".format(i))
         startcol+=1
-
+    index=1
     for ws in inp.worksheets:
+        index+=1
+        keyrow = keysheet.iter_rows(min_row = index, max_row = index, min_col=1, max_col=6)
+        for row in keyrow:
+            keyRowStruct = [cell.value for cell in row]
         for row in ws.iter_rows(min_row=2):
             rowStruct = [cell.value for cell in row]
-            outsheet.append(rowStruct)    
+            finalRow = [*keyRowStruct, *rowStruct]
+            outsheet.append(finalRow)    
 
     outp.save(filename=outfilename)
 
