@@ -26,7 +26,7 @@ def calcAvgPWD(sheet, num):
 def calcResults(sheet, num, important):
     num_reads = sheet.max_row - 1
     if num_reads == 0:
-        return (0, 0, 0, 0, [0 for i in range(num)])
+        return ("NA", "NA", "NA", "NA", ["NA" for i in range(num)])
     distinct_elems = set()
     important_sum = 0
     Xvals = [0 for i in  range(num)]
@@ -44,11 +44,11 @@ def calcResults(sheet, num, important):
     avgPWD = calcAvgPWD(sheet, num)
     return (num_reads, len(distinct_elems), avgPWD, float(important_sum / num_reads), Xvals)
 
-def generateOutput(name):
-    inp = openpyxl.load_workbook(filename='input/{}.xlsx'.format(name))
-    key = openpyxl.load_workbook(filename="keys/{}-key.xlsx".format(name))
+def generateOutput(inpname, keyname):
+    inp = openpyxl.load_workbook(filename='input/{}.xlsx'.format(inpname))
+    key = openpyxl.load_workbook(filename="keys/{}-key.xlsx".format(keyname))
     outp = openpyxl.Workbook()
-    outfilename = "output/{}-output.xlsx".format(name)
+    outfilename = "output/{}-output.xlsx".format(inpname)
 
     ##Initial output creation
     outsheet = outp.active
@@ -80,14 +80,24 @@ def generateOutput(name):
         #Accounting for 0 indexing and header rows
         numsites = int(outsheet['C{}'.format(rowIdx)].value)
         important = int(outsheet['D{}'.format(rowIdx)].value)
-        result = calcResults(inp.worksheets[rowIdx-2], numsites, important)
-        #Write results to output
-        outsheet['G{}'.format(rowIdx)] = result[0]
-        outsheet['H{}'.format(rowIdx)] = result[1]
-        outsheet['I{}'.format(rowIdx)] = result[2]
-        outsheet['J{}'.format(rowIdx)] = result[3]
-        for i in range(numsites):
-            outsheet.cell(row = rowIdx, column=11+i, value=result[4][i])
+        try:
+            result = calcResults(inp.worksheets[rowIdx-2], numsites, important)
+            #Write results to output
+            outsheet['G{}'.format(rowIdx)] = result[0]
+            outsheet['H{}'.format(rowIdx)] = result[1]
+            outsheet['I{}'.format(rowIdx)] = result[2]
+            outsheet['J{}'.format(rowIdx)] = result[3]
+            for i in range(numsites):
+                outsheet.cell(row = rowIdx, column=11+i, value=result[4][i])
+        except:
+            print("Found an error! Sheet info: ")
+            print(inp.worksheets[rowIdx-2])
+            outsheet['G{}'.format(rowIdx)] = "BAD"
+            outsheet['H{}'.format(rowIdx)] = "BAD"
+            outsheet['I{}'.format(rowIdx)] = "BAD"
+            outsheet['J{}'.format(rowIdx)] = "BAD"
+            for i in range(numsites):
+                outsheet.cell(row = rowIdx, column=11+i, value="BAD")
     
     #Part 2: Add raw data
     outp.create_sheet("Raw")
@@ -128,4 +138,5 @@ def generateOutput(name):
 
 namelist = open("list.txt", "r")
 for name in namelist:
-    generateOutput(name)
+    inpname, keyname = name.split(',')
+    generateOutput(inpname.strip(), keyname.strip())

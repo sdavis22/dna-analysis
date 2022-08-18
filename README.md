@@ -14,8 +14,10 @@ This project is used to format DNA sequencing data. Various metrics are calculat
  - Check outputs in the `output` directory
 
 ## Inputs
- - For the purposes of this tutorial, assume the name of the input file is `sample.xlsx`
- - Ensure that list.txt contains the names of all the files you want to analyze, separated by newlines (i.e. `sample` exists in list.txt)
+ - For the purposes of this tutorial, assume the name of the input file is `sample.xlsx` and the keyfile is `key.xlsx`
+ - Ensure that list.txt contains the names of all the files you want to analyze
+  - For each input file, it should be listed in the same line as its keyfile (i.e. `sample, key` exists in list.txt)
+  - Each input file, key file pair should be separated by newlines
  - For each name, have an input file in the `input` directory, i.e. `input/sample.xlsx`
- - Additionally, ensure you have a key file in the `keys` directory, i.e. `keys/sample-key.xlsx`
+ - Additionally, ensure you have a key file in the `keys` directory, i.e. `keys/key.xlsx`
  - Output files will be generated in the `output` directory as `output/sample-output.xlsx`
