@@ -133,7 +133,35 @@ def generateOutput(inpname, keyname):
             rowStruct = [cell.value for cell in row]
             finalRow = [*keyRowStruct, *rowStruct]
             outsheet.append(finalRow)    
-
+    
+    #3rd sheet: array
+    outp.create_sheet("Array")
+    outsheet = outp['Array']
+    outsheet['A1'] = 'Calum70'
+    outsheet['B1'] = 'name'
+    outsheet['C1'] = 'CpG in Amplicon'
+    outsheet['D1'] = 'epicsite'
+    outsheet['E1'] = 'CpG site'
+    outsheet['F1'] = 'number of reads'
+    outsheet['G1'] = 'value'
+    outsheet['H1'] = 'value target'
+    for row in outp['Sheet'].iter_rows(min_row=2, values_only=True):
+        #Read vals for this loci
+        sheetval = row[0]
+        name = row[1]
+        num = row[2]
+        esite =  row[3]
+        numreads = row[6]
+        for i in range(int(num)):
+            rowstruct = [sheetval, name, num, esite]
+            cpgSite = "X" + str(i+1)
+            rowstruct.append(cpgSite)
+            rowstruct.append(numreads)
+            value = row[10+i]
+            rowstruct.append(value)
+            if (i+1) == int(esite):
+                rowstruct.append(value)
+            outsheet.append(rowstruct)
     outp.save(filename=outfilename)
 
 namelist = open("list.txt", "r")
